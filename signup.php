@@ -59,6 +59,7 @@
         <input type="text" name="username"><br><br>
         password:
         <input type="password" name="password"><br><br>
+        <input type="password" name="pass"><br><br>
         <button type="submit" name="post">登録</button>
     </form>
     <a href="#">ログイン画面</a>　
