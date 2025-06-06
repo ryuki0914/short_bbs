@@ -63,4 +63,23 @@ try {
     // エラーが発生した場合の処理
     echo "接続失敗: " . $e->getMessage();
 }
+
+$host = 'localhost';
+$dbname = 'bbs';          
+$user = 'root';          
+$pass = 'root';   
+
+try {
+    // DSN（データソース名）を作成し、PDOオブジェクトで接続
+    $dsn = "mysql:host=$host;dbname=$dbname;charset=utf8mb4";
+    $pdo = new PDO($dsn, $user, $pass);
+
+    // エラーモードを「例外」に設定（エラー時に例外が発生するようにする）
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    // エラーが発生した場合の処理
+    echo "接続失敗: " . $e->getMessage();
+}
+
+
 ?>

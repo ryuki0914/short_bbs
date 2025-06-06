@@ -1,3 +1,27 @@
+<?php
+    session_start();
+
+    $host = 'localhost';
+    $dbname = 'bbs';          
+    $user = 'root';          
+    $pass = 'root';   
+
+    try {
+    // DSN（データソース名）を作成し、PDOオブジェクトで接続
+    $dsn = "mysql:host=$host;dbname=$dbname;charset=utf8mb4";
+    $pdo = new PDO($dsn, $user, $pass);
+
+    // エラーモードを「例外」に設定（エラー時に例外が発生するようにする）
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    $sql = $pdo->prepare('SELECT * FROM comment INNER JOIN user ON comment.user_id = user.id');
+    $sql->execute();
+    $comment = $sql->fetchAll();
+    } catch (PDOException $e) {
+        // エラーが発生した場合の処理
+        echo "接続失敗: " . $e->getMessage();
+    }
+?>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -11,13 +35,11 @@
     <hr>
     <?php
     $filename = 'comments.txt';
-    if (file_exists($filename)) {
-        $lines = file($filename, FILE_IGNORE_NEW_LINES);
-        foreach (array_reverse($lines) as $line) {
-            [$time, $name, $comment] = explode("\t", $line);
+    if (isset($comment)) {
+        foreach (array_reverse($comment) as $line) {
             echo "<div class='post'>";
-            echo "<p><strong>$name</strong> さん ($time)</p>";
-            echo "<p>" . nl2br($comment) . "</p>";
+            echo "<p><strong>", $line['username'] ,"</strong> さん (", $line['created_at'] ,")</p>";
+            echo "<p>" . nl2br($line['content']) . "</p>";
             echo "</div><hr>";
         }
     } else {

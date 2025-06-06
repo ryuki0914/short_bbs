@@ -13,5 +13,7 @@
         <p>パスワード：<input type="text" name="password" ></p>
         <p><button type="submit">ログイン</button></p>
     </form>
+
+    <a href="signup.php">新規登録</a>
 </body>
 </html>

@@ -1,15 +1,57 @@
 <?php
-$name = htmlspecialchars($_POST['name'] ?? '名無し');
+session_start();
+
+$id = $_SESSION['id'];
+$name = htmlspecialchars($_POST['name'] ?? '');
 $comment = htmlspecialchars($_POST['comment'] ?? '');
-$time = date('Y-m-d H:i:s');
 
 if (trim($comment) === '') {
     header("Location: form.php");
     exit;
 }
 
-$entry = "$time\t$name\t$comment\n";
-file_put_contents('comments.txt', $entry, FILE_APPEND);
-header("Location: view.php");
-exit;
+$host = 'localhost';
+$dbname = 'bbs';          
+$user = 'root';          
+$pass = 'root';   
+
+try {
+    // DSN（データソース名）を作成し、PDOオブジェクトで接続
+    $dsn = "mysql:host=$host;dbname=$dbname;charset=utf8mb4";
+    $pdo = new PDO($dsn, $user, $pass);
+
+    // エラーモードを「例外」に設定（エラー時に例外が発生するようにする）
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    if(isset($_SESSION['username'])){
+        $sql = $pdo->prepare('INSERT INTO comment(user_id, content, created_at) VALUES (?, ?, NOW())');
+        $sql->bindParam(1, $id);
+        $sql->bindParam(2, $comment);
+
+        if($sql->execute()){
+            header('Location: view.php');
+            exit;
+        }else{
+            echo '投稿失敗<br>';
+            echo '<a href="./form.php">フォーム画面</a>';
+        }
+        
+    }else{
+        $sql = $pdo->prepare('INSERT INTO comment(content, created_at) VALUES (?, NOW())');
+        $sql->bindParam(1, $comment);
+
+        if($sql->execute()){
+            header('Location: view.php');
+            exit;
+        }else{
+            echo '投稿失敗<br>';
+            echo '<a href="./form.php">フォーム画面</a>';
+        }
+    }
+
+
+    } catch (PDOException $e) {
+        // エラーが発生した場合の処理
+        echo "接続失敗: " . $e->getMessage();
+    }
 ?>

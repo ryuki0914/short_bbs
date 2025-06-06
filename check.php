@@ -19,28 +19,24 @@ try {
     $password = $_POST['password'];
 
 
-     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-
-
-            $sql = $pdo->prepare("SELECT * FROM user WHERE password = ? AND username = ?");
+            $sql = $pdo->prepare("SELECT * FROM user WHERE username = ?");
 
             if($sql){
-                $sql->bindParam(2, $username);
-                $sql->bindParam(1, $hashedPassword);
-                $test = $sql->execute();
-            }
-            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+                $sql->bindParam(1, $username);
+                $sql->execute();
+                $user = $sql->fetch();
 
-            if($user){
-                //ログイン成功
-                $_SESSION['username'] = $user->username;   
-                $_SESSION['password'] = $user->password;  
-                 header("Location: form.php");
-                 exit;
-            }else{
-                //ログイン失敗 
-                 header("Location: login.php");
-                 exit;
+                if($user && password_verify($password, $user['password'])){
+                    $_SESSION['username'] = $user['username'];   
+                    $_SESSION['password'] = $user['password'];  
+                    $_SESSION['id'] = $user['id'];
+                    header("Location: form.php");
+                    exit;
+                }else{
+                    //ログイン失敗 
+                    echo "ログイン失敗<br>";
+                    echo '<a href="./login.php">ログイン画面</a>';
+                }
             }
 
 } catch (PDOException $e) {
