@@ -1,13 +1,10 @@
-<?php
-    $host = 'localhost';
-    $dbname = 'bbs';          
-    $user = 'root';           
-    $pass = 'root';              
+<?php           
 
     try {
-        $dsn = "mysql:host=$host;dbname=$dbname;charset=utf8mb4";
-
-        $pdo = new PDO($dsn, $user, $pass);
+            $pdo=new PDO('mysql:host=mysql320.phy.lolipop.lan;
+    dbname=LAA1553908-bbs;charset=utf8mb4',
+    'LAA1553908',
+    'Pass0914');
 
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 

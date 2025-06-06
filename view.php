@@ -3,8 +3,8 @@
 
     try {
     // DSN（データソース名）を作成し、PDOオブジェクトで接続
-    $pdo=new PDO('mysql:host=mysql305.phy.lolipop.lan;
-    dbname=LAA1553908-php2024;charset=utf8mb4',
+                $pdo=new PDO('mysql:host=mysql320.phy.lolipop.lan;
+    dbname=LAA1553908-bbs;charset=utf8mb4',
     'LAA1553908',
     'Pass0914');
 

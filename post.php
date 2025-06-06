@@ -9,16 +9,12 @@ if (trim($comment) === '') {
     header("Location: form.php");
     exit;
 }
-
-$host = 'localhost';
-$dbname = 'bbs';          
-$user = 'root';          
-$pass = 'root';   
-
 try {
     // DSN（データソース名）を作成し、PDOオブジェクトで接続
-    $dsn = "mysql:host=$host;dbname=$dbname;charset=utf8mb4";
-    $pdo = new PDO($dsn, $user, $pass);
+                $pdo=new PDO('mysql:host=mysql320.phy.lolipop.lan;
+    dbname=LAA1553908-bbs;charset=utf8mb4',
+    'LAA1553908',
+    'Pass0914');
 
     // エラーモードを「例外」に設定（エラー時に例外が発生するようにする）
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
