@@ -15,12 +15,6 @@ try {
     // エラーモードを「例外」に設定（エラー時に例外が発生するようにする）
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    echo "接続成功<br>";
-
-} catch (PDOException $e) {
-    // エラーが発生した場合の処理
-    echo "接続失敗: " . $e->getMessage();
-}
     $username = $_POST['username'];
     $password = $_POST['password'];
 
@@ -48,9 +42,10 @@ try {
                  header("Location: login.php");
                  exit;
             }
-        
 
-    
-
+} catch (PDOException $e) {
+    // エラーが発生した場合の処理
+    echo "接続失敗: " . $e->getMessage();
+}
 
 ?>
