@@ -14,6 +14,9 @@
     $sql = $pdo->prepare('SELECT * FROM comment INNER JOIN user ON comment.user_id = user.id');
     $sql->execute();
     $comment = $sql->fetchAll();
+    if(empty($comment['username'])){
+        $comment['username'] = "名無し";
+    }
     } catch (PDOException $e) {
         // エラーが発生した場合の処理
         echo "接続失敗: " . $e->getMessage();

@@ -19,7 +19,7 @@ try {
     // エラーモードを「例外」に設定（エラー時に例外が発生するようにする）
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    if(isset($_SESSION['username'])){
+    if(isset($_SESSION['id'])){
         $sql = $pdo->prepare('INSERT INTO comment(user_id, content, created_at) VALUES (?, ?, NOW())');
         $sql->bindParam(1, $id);
         $sql->bindParam(2, $comment);
