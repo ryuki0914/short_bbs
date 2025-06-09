@@ -11,12 +11,9 @@
     // エラーモードを「例外」に設定（エラー時に例外が発生するようにする）
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    $sql = $pdo->prepare('SELECT * FROM comment INNER JOIN user ON comment.user_id = user.id');
+    $sql = $pdo->prepare('SELECT comment.content, comment.created_at, user.username FROM comment LEFT OUTER JOIN user ON comment.user_id = user.id');
     $sql->execute();
     $comment = $sql->fetchAll();
-    if(empty($comment['username'])){
-        $comment['username'] = "名無し";
-    }
     } catch (PDOException $e) {
         // エラーが発生した場合の処理
         echo "接続失敗: " . $e->getMessage();
@@ -37,6 +34,9 @@
     $filename = 'comments.txt';
     if (isset($comment)) {
         foreach (array_reverse($comment) as $line) {
+            if(empty($line['username'])){
+                $line['username'] = '名無し';
+            }
             echo "<div class='post'>";
             echo "<p><strong>", $line['username'] ,"</strong> さん (", $line['created_at'] ,")</p>";
             echo "<p>" . nl2br($line['content']) . "</p>";
@@ -46,5 +46,9 @@
         echo "<p>まだ投稿がありません。</p>";
     }
     ?>
+
+    <div class="header">
+        <?= !empty($_SESSION['name']) ? $name : "" ?>
+    </div>
 </body>
 </html>

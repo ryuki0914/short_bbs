@@ -40,7 +40,7 @@ if(isset($_SESSION['username']) && isset($_SESSION['password'])){
     ?>
 
     <div class="header">
-        <?= $name ?>
+        <?= !empty($_SESSION['name']) ? $name : "" ?>
     </div>
 </body>
 </html>

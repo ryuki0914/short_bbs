@@ -14,6 +14,7 @@
         <p><button type="submit">ログイン</button></p>
     </form>
 
-    <a href="signup.php">新規登録</a>
+    <a href="signup.php">新規登録</a>　　
+    <a href="form.php">投稿画面</a>
 </body>
 </html>
