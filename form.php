@@ -18,7 +18,7 @@ if(isset($_SESSION['username']) && isset($_SESSION['password'])){
     <h1>💬 一言掲示板</h1>
     <form action="post.php" method="post">
         <?php
-        if(isset($name)){
+        if(!empty($name)){
             echo '<p>ようこそ、', $name ,'さん</p>';
             echo '<p>名前：<input type="text" name="name" value="', $name ,'" readonly></p>';
         }else{
