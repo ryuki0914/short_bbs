@@ -32,7 +32,7 @@
     <hr>
     <?php
     $filename = 'comments.txt';
-    if (isset($comment)) {
+    if (isset($comment) && !empty($comment)) {
         foreach (array_reverse($comment) as $line) {
             if(empty($line['username'])){
                 $line['username'] = '名無し';
@@ -48,7 +48,7 @@
     ?>
 
     <div class="header">
-        <?= !empty($_SESSION['name']) ? $name : "" ?>
+        <?= !empty($_SESSION['username']) ? $_SESSION['username'] : "" ?>
     </div>
 </body>
 </html>

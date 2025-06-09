@@ -1,55 +1,50 @@
 <?php
 session_start();
 
-if(isset($_SESSION['id'])){
-    $id = $_SESSION['id'];
+// CSRFトークンチェック
+if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+    die('不正なリクエストです。');
 }
-$name = htmlspecialchars($_POST['name'] ?? '');
-$comment = htmlspecialchars($_POST['comment'] ?? '');
 
-if (trim($comment) === '') {
+$id = $_SESSION['id'] ?? null;
+$name = $_POST['name'] ?? '';
+$comment = trim($_POST['comment'] ?? '');
+
+if ($comment === '') {
     header("Location: form.php");
     exit;
 }
+
+if (mb_strlen($comment) > 200) {
+    die('コメントは200文字以内で入力してください。');
+}
+
 try {
-    // DSN（データソース名）を作成し、PDOオブジェクトで接続
-    $pdo=new PDO('mysql:host=mysql320.phy.lolipop.lan;
-        dbname=LAA1553908-bbs;charset=utf8mb4',
+    $pdo = new PDO(
+        'mysql:host=mysql320.phy.lolipop.lan;dbname=LAA1553908-bbs;charset=utf8mb4',
         'LAA1553908',
-        'Pass0914');
+        'Pass0914',
+        [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+    );
 
-    // エラーモードを「例外」に設定（エラー時に例外が発生するようにする）
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    if(isset($_SESSION['id'])){
+    if ($id !== null) {
         $sql = $pdo->prepare('INSERT INTO comment(user_id, content, created_at) VALUES (?, ?, NOW())');
         $sql->bindParam(1, $id);
         $sql->bindParam(2, $comment);
-
-        if($sql->execute()){
-            header('Location: view.php');
-            exit;
-        }else{
-            echo '投稿失敗<br>';
-            echo '<a href="./form.php">フォーム画面</a>';
-        }
-        
-    }else{
+    } else {
         $sql = $pdo->prepare('INSERT INTO comment(content, created_at) VALUES (?, NOW())');
         $sql->bindParam(1, $comment);
-
-        if($sql->execute()){
-            header('Location: view.php');
-            exit;
-        }else{
-            echo '投稿失敗<br>';
-            echo '<a href="./form.php">フォーム画面</a>';
-        }
     }
 
-
-    } catch (PDOException $e) {
-        // エラーが発生した場合の処理
-        echo "接続失敗: " . $e->getMessage();
+    if ($sql->execute()) {
+        header('Location: view.php');
+        exit;
+    } else {
+        echo '投稿失敗<br><a href="./form.php">フォーム画面</a>';
     }
+} catch (PDOException $e) {
+    error_log($e->getMessage());
+    echo "投稿処理中にエラーが発生しました。";
+    exit;
+}
 ?>
