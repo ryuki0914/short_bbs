@@ -22,7 +22,7 @@ if(isset($_SESSION['username']) && isset($_SESSION['password'])){
             echo '<p>ようこそ、', $name ,'さん</p>';
             echo '<p>名前：<input type="text" name="name" value="', $name ,'" readonly></p>';
         }else{
-            echo '<p>名前：<input type="text" name="name" required></p>';
+            echo '<p>名前：<input type="text" name="name" value="名無し" readonly></p>';
         }
         ?>
         

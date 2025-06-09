@@ -1,7 +1,9 @@
 <?php
 session_start();
 
-$id = $_SESSION['id'];
+if(isset($_SESSION['id'])){
+    $id = $_SESSION['id'];
+}
 $name = htmlspecialchars($_POST['name'] ?? '');
 $comment = htmlspecialchars($_POST['comment'] ?? '');
 
