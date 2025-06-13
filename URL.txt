@@ -1,2 +1,2 @@
 //掲示板_url名
-https://aso2301177.lovesick.jp/kadai/short_bbs2/view.php
+https://aso2301177.lovesick.jp/kadai/short_bbs2/login.php
